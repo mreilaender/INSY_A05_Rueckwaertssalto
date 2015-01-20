@@ -1,4 +1,4 @@
- package reilaender.parser;
+package reilaender.parser;
 
 import java.io.Console;
 import java.io.PrintWriter;
@@ -42,10 +42,10 @@ public class Parser {
 		{"s", "true", "Feld, nach dem sortiert werden soll (nur eines möglich, Standard: keines)", "false"},
 		{"r", "true", "Sortierrichtung. Standard: ASC", "false"},
 		{"w", "true", "eine Bedingung in SQL-Syntax, die zum Filtern der Tabelle verwendet wird. Standard: keine", "false"},
-		{"t", "true", "Trennzeichen, dass für die Ausgabe verwendet werden soll. Standard: ; ", "false"},
-		{"f", "true", "Kommagetrennte Liste (ohne Leerzeichen) der Felder, die im Ergebnis enthalten sein sollen. * soll akzeptiert werden (Pflicht)", "true"},
-		{"o", "true", "Name der Ausgabedatei. Standard: keine -> Ausgabe auf der Konsole", "false"},
-		{"T", "true", "Tabellenname (Pflicht)", "true"}
+//		{"t", "true", "Trennzeichen, dass für die Ausgabe verwendet werden soll. Standard: ; ", "false"},
+//		{"f", "true", "Kommagetrennte Liste (ohne Leerzeichen) der Felder, die im Ergebnis enthalten sein sollen. * soll akzeptiert werden (Pflicht)", "true"},
+//		{"o", "true", "Name der Ausgabedatei. Standard: keine -> Ausgabe auf der Konsole", "false"},
+//		{"T", "true", "Tabellenname (Pflicht)", "true"}
 	};
 	private HelpFormatter help;
 	private boolean missing;
@@ -109,24 +109,24 @@ public class Parser {
 		if(cmd.hasOption('w')) {
 			FILTER = cmd.getOptionValue('w');
 		}
-		if(cmd.hasOption('t')) {
-			DELIMITER = cmd.getOptionValue('t');
-		}
-		if(cmd.hasOption('f')) {
-			COLUMNS = cmd.getOptionValue('f');
-		} else {
-			System.err.println("No columns specified (-f)");
-			missing = true;
-		}
+//		if(cmd.hasOption('t')) {
+//			DELIMITER = cmd.getOptionValue('t');
+//		}
+//		if(cmd.hasOption('f')) {
+//			COLUMNS = cmd.getOptionValue('f');
+//		} else {
+//			System.err.println("No columns specified (-f)");
+//			missing = true;
+//		}
 		if(cmd.hasOption('o')) {
 			OUTPUT_FILENAME = cmd.getOptionValue('o');
 		}
-		if(cmd.hasOption('T')) {
-			TABLENAME = cmd.getOptionValue('T');
-		} else {
-			System.err.println("Missing Tablename (-T)");
-			missing = true;
-		}
+//		if(cmd.hasOption('T')) {
+//			TABLENAME = cmd.getOptionValue('T');
+//		} else {
+//			System.err.println("Missing Tablename (-T)");
+//			missing = true;
+//		}
 		return missing;
 	}
 	public boolean isMissing() {
