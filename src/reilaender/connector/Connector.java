@@ -91,43 +91,43 @@ public class Connector {
 	//Some Statements are multiple in this method
 	public void refresh() {
 		try {
-			DatabaseMetaData tmp = getCon().getMetaData();
-			//			tmp.getImportedKeys(con.getCatalog(), null, null);
-			ResultSet tmprs = tmp.getTables(null, null, null, null);
-			while(tmprs.next()) {
-				String table_name = tmprs.getString(3);
-				ResultSet tmppk = tmp.getPrimaryKeys(null, null, table_name),
-						tmpfk = tmp.getImportedKeys(con.getCatalog(), null, table_name),
-						tmpat = tmp.getColumns(null, null, table_name, null);
+			DatabaseMetaData tmp = getCon().getMetaData();					//tmp is getting all the meta-data from the db you are connected with
+																			//tmp.getImportedKeys(con.getCatalog(), null, null);
+			ResultSet tmprs = tmp.getTables(null, null, null, null);		//seperate the metadata into specific tables, which are implemented in the specific database
+			while(tmprs.next()) {											//walking step-by-step through the tables
+				String table_name = tmprs.getString(3);						//getString() returns specific metadata => parameter 3 is for the tablename
+				ResultSet tmppk = tmp.getPrimaryKeys(null, null, table_name),					//Now 3 ResultSet Objects got declared and initialized. tmppk=> Primary Key
+						tmpfk = tmp.getImportedKeys(con.getCatalog(), null, table_name),		//tmpfk => Foreign Keys (Keys, which are bond to other tables)
+						tmpat = tmp.getColumns(null, null, table_name, null);					//
 
-				ArrayList<String> all_Keys = new ArrayList<>();
-				while(tmppk.next()) {
+				ArrayList<String> all_Keys = new ArrayList<>();									//for each table, a own ArrayList is being used
+				while(tmppk.next()) {															//walking through the PK's
 					boolean isMul = true;
-					while(tmpfk.next()) {
-						String name = tmpfk.getString("FKCOLUMN_NAME");
-						if(tmppk.getString(4).equals(name)) {//If actual PK also FK
-							isMul = false;
-							String fk_table = tmpfk.getString("FKTABLE_NAME");
-							all_Keys.add("<<PK>><<FK>>" + fk_table + "." + name);
+					while(tmpfk.next()) {														//walking through the FK's
+						String name = tmpfk.getString("FKCOLUMN_NAME");							//Here we get all the column-names, where a FK is implemented
+						if(tmppk.getString(4).equals(name)) {									//If actual PK is also a FK
+							isMul = false;	
+							String fk_table = tmpfk.getString("FKTABLE_NAME");			
+							all_Keys.add("<<PK>><<FK>>" + fk_table + "." + name);				//Marking the data with both PK and FK
 						}
 					}
 					if(isMul)
-						all_Keys.add("<<PK>>" + tmppk.getString(4));
+						all_Keys.add("<<PK>>" + tmppk.getString(4));							//if it is just a PK
 				}
 
-				tmpfk = tmp.getImportedKeys(con.getCatalog(), null, table_name);
+				tmpfk = tmp.getImportedKeys(con.getCatalog(), null, table_name);				//getting all the FK's from the speific table
 				while(tmpfk.next()) {
 					String fk_name = tmpfk.getString("FKCOLUMN_NAME"),
 							fk_table = tmpfk.getString("FKTABLE_NAME");
 					boolean isJustFK = true;
 					for(int i = 0;i < all_Keys.size(); ++i) {
-						if(all_Keys.get(i).contains(fk_name)) {
+						if(all_Keys.get(i).contains(fk_name)) {									//if the specific key contains FKCOLUMN_NAME, it's not an ordinary FK
 							isJustFK = false;
 							break;
 						}
 					}
 					if(isJustFK)
-						all_Keys.add("<<FK>>" + fk_table + "." + fk_name);
+						all_Keys.add("<<FK>>" + fk_table + "." + fk_name);						//an ordinary FK
 				}
 
 				while(tmpat.next()) {
