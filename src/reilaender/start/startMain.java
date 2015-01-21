@@ -22,7 +22,7 @@ public class startMain {
 		try {
 			connector.connect();
 			connector.refresh();
-			connector.printAttr(new PrintWriter(System.out));
+			connector.printAttr(new PrintWriter("Relationenmodell.txt"));
 		} catch (SQLException e) {
 			// TODO
 			System.err.println(todo);
