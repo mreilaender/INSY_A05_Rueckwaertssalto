@@ -91,14 +91,14 @@ public class Connector {
 	//Some Statements are multiple in this method
 	public void refresh() {
 		try {
-			DatabaseMetaData tmp = getCon().getMetaData();					//tmp is getting all the meta-data from the db you are connected with
+			DatabaseMetaData tmp = getCon().getMetaData();					//tmp gets all the meta-data from the db you are connected with
 																			//tmp.getImportedKeys(con.getCatalog(), null, null);
 			ResultSet tmprs = tmp.getTables(null, null, null, null);		//seperate the metadata into specific tables, which are implemented in the specific database
 			while(tmprs.next()) {											//walking step-by-step through the tables
 				String table_name = tmprs.getString(3);						//getString() returns specific metadata => parameter 3 is for the tablename
 				ResultSet tmppk = tmp.getPrimaryKeys(null, null, table_name),					//Now 3 ResultSet Objects got declared and initialized. tmppk=> Primary Key
 						tmpfk = tmp.getImportedKeys(con.getCatalog(), null, table_name),		//tmpfk => Foreign Keys (Keys, which are bond to other tables)
-						tmpat = tmp.getColumns(null, null, table_name, null);					//
+						tmpat = tmp.getColumns(null, null, table_name, null);					//attributes 
 
 				ArrayList<String> all_Keys = new ArrayList<>();									//for each table, a own ArrayList is being used
 				while(tmppk.next()) {															//walking through the PK's
@@ -150,6 +150,7 @@ public class Connector {
 		} catch (SQLException e) {
 			System.err.println("Connection closed (" + e.getMessage() + "). Restart Program");
 		}
+		
 
 	}
 	/**
