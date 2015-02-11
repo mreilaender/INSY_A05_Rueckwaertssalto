@@ -112,6 +112,7 @@ public class Connector {
 						}
 					}
 					if(isMul)
+						
 						all_Keys.add("<<PK>>" + tmppk.getString(4));							//if it is just a PK
 				}
 
@@ -121,8 +122,8 @@ public class Connector {
 							fk_table = tmpfk.getString("FKTABLE_NAME");
 					boolean isJustFK = true;
 					for(int i = 0;i < all_Keys.size(); ++i) {
-						if(all_Keys.get(i).contains(fk_name)) {									//if the specific key contains FKCOLUMN_NAME, it's not an ordinary FK
-							isJustFK = false;
+						if(all_Keys.get(i).contains(fk_name)) {									//if the specific key contains FKCOLUMN_NAME, it's aleady marked from
+							isJustFK = false;													//the upper mechanism as PK&FK, so it can't be declared twice as FK
 							break;
 						}
 					}
