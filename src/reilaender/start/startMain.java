@@ -1,5 +1,6 @@
 package reilaender.start;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -24,6 +25,10 @@ public class startMain {
 			connector.refresh();
 			connector.printAttr(new PrintWriter("Relationenmodell.txt"));
 		} catch (SQLException e) {
+			// TODO
+			System.err.println(todo);
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			// TODO
 			System.err.println(todo);
 			e.printStackTrace();
